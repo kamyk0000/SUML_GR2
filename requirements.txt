@@ -1,3 +1,5 @@
+black
+pandas
 scikit-learn
+matplotlib
 skops
-pandas~=2.2
