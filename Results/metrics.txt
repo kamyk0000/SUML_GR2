@@ -1,2 +1,2 @@
 
-Accuracy = 95.0% , F1 Score = 0.93.
+Accuracy = 100.0% , F1 Score = 1.0.
