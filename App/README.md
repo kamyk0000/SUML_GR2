@@ -1,4 +1,3 @@
-#SUML_GR2
 ---
 title: Drug Classification
 emoji: 📚
@@ -11,5 +10,6 @@ pinned: false
 license: apache-2.0
 short_description: SUML datacamp model trainer GR2
 ---
+#SUML_GR2
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
