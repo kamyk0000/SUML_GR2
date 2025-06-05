@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1749151516390
+current_stage: None
+description: null
+last_updated_timestamp: 1749151516390
+name: Food11Model
+run_id: 8989f8db45984f63803d2b262d32de41
+run_link: null
+source: file:///C:/Users/kamyk/Documents/GitHub/SUML_GR2/MLflow/mlruns/0/8989f8db45984f63803d2b262d32de41/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///C:/Users/kamyk/Documents/GitHub/SUML_GR2/MLflow/mlruns/0/8989f8db45984f63803d2b262d32de41/artifacts/model
+user_id: null
+version: 1

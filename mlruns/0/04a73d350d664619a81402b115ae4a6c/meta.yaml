@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kamyk/Documents/GitHub/SUML_GR2/mlruns/0/04a73d350d664619a81402b115ae4a6c/artifacts
+end_time: 1749151969598
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 04a73d350d664619a81402b115ae4a6c
+run_name: debonair-fish-209
+run_uuid: 04a73d350d664619a81402b115ae4a6c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749151966078
+status: 3
+tags: []
+user_id: kamyk

@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1749153397199
+current_stage: None
+description: ''
+last_updated_timestamp: 1749153397199
+name: Food11ONNX
+run_id: 1f2b117da61a468a8e9d8189ec552314
+run_link: ''
+source: file:///C:/Users/kamyk/Documents/GitHub/SUML_GR2/mlruns/0/1f2b117da61a468a8e9d8189ec552314/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///C:/Users/kamyk/Documents/GitHub/SUML_GR2/mlruns/0/1f2b117da61a468a8e9d8189ec552314/artifacts/model
+user_id: null
+version: 3

@@ -1,0 +1,5 @@
+streamlit
+onnxruntime
+torch
+torchvision
+numpy

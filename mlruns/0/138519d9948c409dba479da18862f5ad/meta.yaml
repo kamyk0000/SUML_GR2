@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kamyk/Documents/GitHub/SUML_GR2/mlruns/0/138519d9948c409dba479da18862f5ad/artifacts
+end_time: 1749153887327
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 138519d9948c409dba479da18862f5ad
+run_name: smiling-ray-819
+run_uuid: 138519d9948c409dba479da18862f5ad
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749153884909
+status: 3
+tags: []
+user_id: kamyk

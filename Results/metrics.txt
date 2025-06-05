@@ -1,2 +1,2 @@
-
-Accuracy = 95.0% , F1 Score = 0.93.
+Validation Accuracy = 72.92%, F1 = 0.74
+Evaluation Accuracy = 75.05%, F1 = 0.77
