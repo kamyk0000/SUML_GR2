@@ -13,3 +13,5 @@ streamlit
 onnxruntime
 mlflow
 mlflow[extras]
+azureml-sdk
+joblib

@@ -1,9 +1,8 @@
-import onnx
 import onnxruntime as ort
 from PIL import Image
 import mlflow.pytorch
 from mlflow.tracking import MlflowClient
-from predictor import FoodClassifier
+from Train.predictor import FoodClassifier
 
 
 # python -m mlflow server --host 127.0.0.1 --port 8080

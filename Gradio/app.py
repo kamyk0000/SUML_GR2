@@ -1,6 +1,5 @@
 import gradio as gr
-from PIL import Image
-from predictor import FoodClassifier
+from Train.predictor import FoodClassifier
 
 
 def classify_food(image):

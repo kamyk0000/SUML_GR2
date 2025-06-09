@@ -1,0 +1,16 @@
+black
+pandas
+scikit-learn
+matplotlib
+skops
+gradio
+pillow
+torch
+numpy
+onnx
+torchvision
+streamlit
+onnxruntime
+mlflow
+mlflow[extras]
+azureml-sdk

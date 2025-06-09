@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kamyk/Documents/GitHub/SUML_GR2/mlruns/0/fab6bac3eee24ad18bc5d9192d98877f/artifacts
+end_time: 1749491530587
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: fab6bac3eee24ad18bc5d9192d98877f
+run_name: resnet18-food11
+run_uuid: fab6bac3eee24ad18bc5d9192d98877f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749491519702
+status: 3
+tags: []
+user_id: kamyk
