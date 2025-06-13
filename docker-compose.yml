@@ -1,0 +1,26 @@
+# docker-compose.yml
+services:
+  streamlit:
+    build: .
+    command: streamlit run Streamlit/app.py --server.port=8501 --server.address=0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./:/app
+    working_dir: /app
+
+  mlflow:
+    build: .
+    command: mlflow ui --port 5000 --host 0.0.0.0
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./:/app
+    working_dir: /app
+
+  another-service:
+    build: .
+    command: python Streamlit/app.py --mode=other
+    volumes:
+      - ./:/app
+    working_dir: /app
