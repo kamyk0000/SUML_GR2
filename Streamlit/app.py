@@ -21,4 +21,4 @@ if uploaded:
     client = MLflowClient()
     label, confidence = client.predict(image=image)
 
-    st.success(f"🍽️ Predicted Food Type: **{label}** ({confidence * 100:.2f}% confidence)")
+    st.success(f"Predicted Food Type: **{label}** ({confidence * 100:.2f}% confidence)")

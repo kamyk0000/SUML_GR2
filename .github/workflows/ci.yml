@@ -1,9 +1,9 @@
 name: Continuous Integration
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "project" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "project" ]
   workflow_dispatch:
   
 permissions: write-all
@@ -13,17 +13,27 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: iterative/setup-cml@v2
+
       - name: Install Packages
+        working-directory: Train
         run: make install
+
       - name: Format
+        working-directory: Train
         run: make format
+
       - name: Train
+        working-directory: Train
         run: make train
+
       - name: Evaluation
+        working-directory: Train
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: make eval
+
       - name: Update Branch
+        working-directory: Train
         env:
           NAME: ${{ secrets.USER_NAME }}
           EMAIL: ${{ secrets.USER_EMAIL }}

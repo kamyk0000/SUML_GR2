@@ -1,2 +1,2 @@
-Validation Accuracy = 69.59%, F1 = 0.70
-Evaluation Accuracy = 72.09%, F1 = 0.73
+Validation Accuracy = 54.84%, F1 = 0.53, Loss = 1.527
+Evaluation Accuracy = 58.26%, F1 = 0.57, Loss = 1.434

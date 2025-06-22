@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1750611765433
+current_stage: None
+description: null
+last_updated_timestamp: 1750611765433
+name: Food11ResNet
+run_id: 08d2e2bef6a34cf18115490304265b09
+run_link: null
+source: file:///C:/Users/kamyk/Documents/GitHub/SUML_GR2/mlruns/0/08d2e2bef6a34cf18115490304265b09/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///C:/Users/kamyk/Documents/GitHub/SUML_GR2/mlruns/0/08d2e2bef6a34cf18115490304265b09/artifacts/model
+user_id: null
+version: 4

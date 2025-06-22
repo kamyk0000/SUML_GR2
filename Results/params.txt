@@ -1,0 +1,1 @@
+Epochs = 1, Batch Size = 32, Classes = 11
