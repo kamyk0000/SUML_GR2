@@ -1,5 +1,5 @@
 install:
-	pip install --upgrade pip && \
+	pip install "pip<24.1" && \
 	pip install -r requirements.txt
 
 format:
