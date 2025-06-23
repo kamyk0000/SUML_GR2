@@ -48,12 +48,12 @@ if args.data_path is None:
     DATA_DIR = "../Data/"
 else:
     DATA_DIR = args.data_path
-MODEL_PTH = "Model/food11_resnet18.pth"
-MODEL_ONNX = "Model/food11_resnet18.onnx"
-METRICS_PATH = "Results/metrics.txt"
-CONF_MATRIX_IMG = "Results/model_results.png"
-PARAM_PATH = "Results/params.txt"
-LINKS_PATH = "Results/links.txt"
+MODEL_PTH = "../Model/food11_resnet18.pth"
+MODEL_ONNX = "../Model/food11_resnet18.onnx"
+METRICS_PATH = "../Results/metrics.txt"
+CONF_MATRIX_IMG = "../Results/model_results.png"
+PARAM_PATH = "../Results/params.txt"
+LINKS_PATH = "../Results/links.txt"
 BATCH_SIZE = 32
 EPOCHS = 1
 NUM_CLASSES = 11
