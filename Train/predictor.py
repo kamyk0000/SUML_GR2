@@ -14,16 +14,28 @@ class FoodClassifier:
         self.input_name = self.session.get_inputs()[0].name
 
         self.class_names = [
-            'Bread', 'Dairy product', 'Dessert', 'Egg', 'Fried food',
-            'Meat', 'Noodles-Pasta', 'Rice', 'Seafood', 'Soup', 'Vegetable-Fruit'
+            "Bread",
+            "Dairy product",
+            "Dessert",
+            "Egg",
+            "Fried food",
+            "Meat",
+            "Noodles-Pasta",
+            "Rice",
+            "Seafood",
+            "Soup",
+            "Vegetable-Fruit",
         ]
 
-        self.transform = transforms.Compose([
-            transforms.Resize((224, 224)),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                 std=[0.229, 0.224, 0.225])
-        ])
+        self.transform = transforms.Compose(
+            [
+                transforms.Resize((224, 224)),
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+                ),
+            ]
+        )
 
     def predict(self, image: Image.Image):
         img = self.transform(image).unsqueeze(0).numpy().astype(np.float32)

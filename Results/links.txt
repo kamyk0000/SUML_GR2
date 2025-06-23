@@ -1,2 +1,1 @@
-MLflow Run: file:///C:/Users/kamyk/Documents/GitHub/SUML_GR2/mlruns/#/experiments/0/runs/fe529e0dbc9a43ed8ee7a975f5cfbcc8
-AzureML Run: https://ml.azure.com/runs/Food11Training_1750677405_51e18841?wsid=/subscriptions/53886824-b071-46ab-bb7e-b7905c4a1237/resourcegroups/s24651-rg/workspaces/Gr_11-02&tid=ae65f568-0ceb-42c2-9dda-731b9c16e6b4
+MLflow Run: file:///home/runner/work/SUML_GR2/SUML_GR2/Train/mlruns/#/experiments/0/runs/439e7282befe43c1a78bdf013abac9fc

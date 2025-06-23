@@ -12,7 +12,12 @@ from torchvision import datasets, transforms
 from torchvision.models import resnet18, ResNet18_Weights
 from azureml.core import Dataset, ScriptRunConfig, Workspace, Datastore, Run
 from azureml.core.compute import AmlCompute
-from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    confusion_matrix,
+    ConfusionMatrixDisplay,
+)
 import matplotlib.pyplot as plt
 import mlflow.pytorch
 import joblib
@@ -20,7 +25,9 @@ import joblib
 # %%
 # LOAD AZURE DATA
 parser = argparse.ArgumentParser()
-parser.add_argument('--data-path', type=str, default=None, help="Ścieżka do zamontowanego datasetu")
+parser.add_argument(
+    "--data-path", type=str, default=None, help="Ścieżka do zamontowanego datasetu"
+)
 if os.getenv("CI") != "true":
     ws = Workspace.from_config()
     datastore = Datastore.register_azure_blob_container(
@@ -29,17 +36,19 @@ if os.getenv("CI") != "true":
         container_name="food11-data",
         account_name="food11",
         account_key=os.environ.get("AZURE_ML_ACCOUNT_KEY"),
-        create_if_not_exists=False
+        create_if_not_exists=False,
     )
     datastore = Datastore.get(ws, "food11")
-    data_path_on_blob = [(datastore, 'food11-data/')]
+    data_path_on_blob = [(datastore, "food11-data/")]
 
     food11_dataset = Dataset.File.from_files(path=data_path_on_blob)
 
-    food11_dataset = food11_dataset.register(workspace=ws,
-                                             name='food11_dataset',
-                                             description='Dataset obrazków Food11 z kontenera',
-                                             create_new_version=True)
+    food11_dataset = food11_dataset.register(
+        workspace=ws,
+        name="food11_dataset",
+        description="Dataset obrazków Food11 z kontenera",
+        create_new_version=True,
+    )
 args, _ = parser.parse_known_args()
 
 # %%
@@ -61,25 +70,30 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # %%
 # TRANSFORMS
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406],
-                         [0.229, 0.224, 0.225])
-])
+transform = transforms.Compose(
+    [
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    ]
+)
 
 # LOADERS
 train_loader = DataLoader(
     datasets.ImageFolder(os.path.join(DATA_DIR, "training"), transform=transform),
-    batch_size=BATCH_SIZE, shuffle=True)
+    batch_size=BATCH_SIZE,
+    shuffle=True,
+)
 
 val_loader = DataLoader(
     datasets.ImageFolder(os.path.join(DATA_DIR, "validation"), transform=transform),
-    batch_size=BATCH_SIZE)
+    batch_size=BATCH_SIZE,
+)
 
 eval_loader = DataLoader(
     datasets.ImageFolder(os.path.join(DATA_DIR, "evaluation"), transform=transform),
-    batch_size=BATCH_SIZE)
+    batch_size=BATCH_SIZE,
+)
 
 # %%
 # MODEL ARCHITECTURE
@@ -138,22 +152,30 @@ def evaluate(loader, label="Validation", criterion=None):
     return acc, f1, avg_loss, y_true, y_pred
 
 
-val_acc, val_f1, val_loss, y_true, y_pred = evaluate(val_loader, "Validation", criterion)
+val_acc, val_f1, val_loss, y_true, y_pred = evaluate(
+    val_loader, "Validation", criterion
+)
 eval_acc, eval_f1, eval_loss, _, _ = evaluate(eval_loader, "Evaluation", criterion)
 
 # %%
 # SAVE METRICS
 with open(METRICS_PATH, "w") as f:
     f.write(f"Training Duration -> {training_duration}s\n")
-    f.write(f"Validation Accuracy = {val_acc * 100:.2f}%, F1 = {val_f1:.2f}, Loss = {val_loss:.3f}\n")
-    f.write(f"Evaluation Accuracy = {eval_acc * 100:.2f}%, F1 = {eval_f1:.2f}, Loss = {eval_loss:.3f}\n")
+    f.write(
+        f"Validation Accuracy = {val_acc * 100:.2f}%, F1 = {val_f1:.2f}, Loss = {val_loss:.3f}\n"
+    )
+    f.write(
+        f"Evaluation Accuracy = {eval_acc * 100:.2f}%, F1 = {eval_f1:.2f}, Loss = {eval_loss:.3f}\n"
+    )
 
 with open(PARAM_PATH, "w") as f:
     f.write(
-        f"Optimizer = {optimizer.__class__.__name__}, Loss Function = {criterion.__class__.__name__}, Architecture = {model.__class__.__name__}\n")
+        f"Optimizer = {optimizer.__class__.__name__}, Loss Function = {criterion.__class__.__name__}, Architecture = {model.__class__.__name__}\n"
+    )
     f.write(f"Epochs = {EPOCHS}, Batch Size = {BATCH_SIZE}, Classes = {NUM_CLASSES}\n")
     f.write(
-        f"Data Sizes -> Train = {len(train_loader.dataset)}, Validation = {len(val_loader.dataset)}, Evaluation = {len(eval_loader.dataset)}\n")
+        f"Data Sizes -> Train = {len(train_loader.dataset)}, Validation = {len(val_loader.dataset)}, Evaluation = {len(eval_loader.dataset)}\n"
+    )
 
 # %%
 # SAVE CONFUSION MATRIX
@@ -174,9 +196,13 @@ print("Saved PyTorch model to:", MODEL_PTH)
 # EXPORT TO ONNX
 dummy_input = torch.randn(1, 3, 224, 224).to(DEVICE)
 torch.onnx.export(
-    model, dummy_input, MODEL_ONNX,
-    input_names=["input"], output_names=["output"],
-    export_params=True, opset_version=11
+    model,
+    dummy_input,
+    MODEL_ONNX,
+    input_names=["input"],
+    output_names=["output"],
+    export_params=True,
+    opset_version=11,
 )
 print("Exported ONNX model to:", MODEL_ONNX)
 
@@ -188,7 +214,7 @@ with mlflow.start_run(run_name="resnet18-food11"):
         model,
         artifact_path="model",
         registered_model_name="Food11ResNet",
-        input_example=dummy_input2
+        input_example=dummy_input2,
     )
     mlflow_url = f"{mlflow.get_tracking_uri().removesuffix('/')}/#/experiments/{mlflow.active_run().info.experiment_id}/runs/{mlflow.active_run().info.run_id}"
     with open(LINKS_PATH, "w") as f:
@@ -225,20 +251,22 @@ if os.getenv("CI") != "true":
     compute_name = "food-cluster"
 
     compute_config = AmlCompute.provisioning_configuration(
-        vm_size="STANDARD_DS11_V2",
-        max_nodes=2,
-        idle_seconds_before_scaledown=300
+        vm_size="STANDARD_DS11_V2", max_nodes=2, idle_seconds_before_scaledown=300
     )
 
     if compute_name not in ws.compute_targets:
-        compute_target = azureml.core.ComputeTarget.create(ws, compute_name, compute_config)
+        compute_target = azureml.core.ComputeTarget.create(
+            ws, compute_name, compute_config
+        )
         compute_target.wait_for_completion(show_output=True)
     else:
         compute_target = ws.compute_targets[compute_name]
 
     compute = azureml.core.ComputeTarget(workspace=ws, name=compute_name)
 
-    env = azureml.core.Environment.from_pip_requirements(name="food-env", file_path="Train/requirements.txt")
+    env = azureml.core.Environment.from_pip_requirements(
+        name="food-env", file_path="Train/requirements.txt"
+    )
 
     mount_context = food11_dataset.as_mount()
 
@@ -247,7 +275,7 @@ if os.getenv("CI") != "true":
         script="train.py",
         compute_target=compute_target,
         environment=env,
-        arguments=['--data-path', food11_dataset.as_mount()]
+        arguments=["--data-path", food11_dataset.as_mount()],
     )
 
     experiment = azureml.core.Experiment(ws, "Food11Training")
