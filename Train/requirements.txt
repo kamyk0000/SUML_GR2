@@ -1,6 +1,6 @@
 black
 pandas
-scikit-learn>
+scikit-learn
 matplotlib
 skops
 gradio
