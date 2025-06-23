@@ -17,31 +17,29 @@ import matplotlib.pyplot as plt
 import mlflow.pytorch
 import joblib
 
-
 # %%
 # LOAD AZURE DATA
-ws = Workspace.from_config()
-datastore = Datastore.register_azure_blob_container(
-    workspace=ws,
-    datastore_name="food11",
-    container_name="food11-data",
-    account_name="food11",
-    account_key=os.environ.get("AZURE_ML_ACCOUNT_KEY"),
-    create_if_not_exists=False
-)
-datastore = Datastore.get(ws, "food11")
-data_path_on_blob = [(datastore, 'food11-data/')]
-
-food11_dataset = Dataset.File.from_files(path=data_path_on_blob)
-
-food11_dataset = food11_dataset.register(workspace=ws,
-                                         name='food11_dataset',
-                                         description='Dataset obrazków Food11 z kontenera',
-                                         create_new_version=True)
-
 parser = argparse.ArgumentParser()
-parser.add_argument('--data-path', type=str, default=None,
-                    help="Ścieżka do zamontowanego datasetu")
+parser.add_argument('--data-path', type=str, default=None, help="Ścieżka do zamontowanego datasetu")
+if os.getenv("CI") != "true":
+    ws = Workspace.from_config()
+    datastore = Datastore.register_azure_blob_container(
+        workspace=ws,
+        datastore_name="food11",
+        container_name="food11-data",
+        account_name="food11",
+        account_key=os.environ.get("AZURE_ML_ACCOUNT_KEY"),
+        create_if_not_exists=False
+    )
+    datastore = Datastore.get(ws, "food11")
+    data_path_on_blob = [(datastore, 'food11-data/')]
+
+    food11_dataset = Dataset.File.from_files(path=data_path_on_blob)
+
+    food11_dataset = food11_dataset.register(workspace=ws,
+                                             name='food11_dataset',
+                                             description='Dataset obrazków Food11 z kontenera',
+                                             create_new_version=True)
 args, _ = parser.parse_known_args()
 
 # %%
@@ -109,6 +107,7 @@ for epoch in range(EPOCHS):
 
 training_duration = time.time() - start_time
 
+
 # %%
 # EVALUATE FUNCTION
 def evaluate(loader, label="Validation", criterion=None):
@@ -138,6 +137,7 @@ def evaluate(loader, label="Validation", criterion=None):
     print(f"{label} → Accuracy: {acc * 100:.2f}% | F1: {f1:.2f} | Loss: {avg_loss:.3f}")
     return acc, f1, avg_loss, y_true, y_pred
 
+
 val_acc, val_f1, val_loss, y_true, y_pred = evaluate(val_loader, "Validation", criterion)
 eval_acc, eval_f1, eval_loss, _, _ = evaluate(eval_loader, "Evaluation", criterion)
 
@@ -148,11 +148,12 @@ with open(METRICS_PATH, "w") as f:
     f.write(f"Validation Accuracy = {val_acc * 100:.2f}%, F1 = {val_f1:.2f}, Loss = {val_loss:.3f}\n")
     f.write(f"Evaluation Accuracy = {eval_acc * 100:.2f}%, F1 = {eval_f1:.2f}, Loss = {eval_loss:.3f}\n")
 
-
 with open(PARAM_PATH, "w") as f:
-    f.write(f"Optimizer = {optimizer.__class__.__name__}, Loss Function = {criterion.__class__.__name__}, Architecture = {model.__class__.__name__}\n")
+    f.write(
+        f"Optimizer = {optimizer.__class__.__name__}, Loss Function = {criterion.__class__.__name__}, Architecture = {model.__class__.__name__}\n")
     f.write(f"Epochs = {EPOCHS}, Batch Size = {BATCH_SIZE}, Classes = {NUM_CLASSES}\n")
-    f.write(f"Data Sizes -> Train = {len(train_loader.dataset)}, Validation = {len(val_loader.dataset)}, Evaluation = {len(eval_loader.dataset)}\n")
+    f.write(
+        f"Data Sizes -> Train = {len(train_loader.dataset)}, Validation = {len(val_loader.dataset)}, Evaluation = {len(eval_loader.dataset)}\n")
 
 # %%
 # SAVE CONFUSION MATRIX
@@ -218,60 +219,59 @@ with mlflow.start_run(run_name="resnet18-food11"):
 
 # %%
 # LOG TO AZUREML
-ws = azureml.core.Workspace.from_config()
+if os.getenv("CI") != "true":
+    food11_dataset = Dataset.get_by_name(ws, name="food11_dataset")
 
-food11_dataset = Dataset.get_by_name(ws, name="food11_dataset")
+    compute_name = "food-cluster"
 
-compute_name = "food-cluster"
+    compute_config = AmlCompute.provisioning_configuration(
+        vm_size="STANDARD_DS11_V2",
+        max_nodes=2,
+        idle_seconds_before_scaledown=300
+    )
 
-compute_config = AmlCompute.provisioning_configuration(
-    vm_size="STANDARD_DS11_V2",
-    max_nodes=2,
-    idle_seconds_before_scaledown=300
-)
+    if compute_name not in ws.compute_targets:
+        compute_target = azureml.core.ComputeTarget.create(ws, compute_name, compute_config)
+        compute_target.wait_for_completion(show_output=True)
+    else:
+        compute_target = ws.compute_targets[compute_name]
 
-if compute_name not in ws.compute_targets:
-    compute_target = azureml.core.ComputeTarget.create(ws, compute_name, compute_config)
-    compute_target.wait_for_completion(show_output=True)
-else:
-    compute_target = ws.compute_targets[compute_name]
+    compute = azureml.core.ComputeTarget(workspace=ws, name=compute_name)
 
-compute = azureml.core.ComputeTarget(workspace=ws, name=compute_name)
+    env = azureml.core.Environment.from_pip_requirements(name="food-env", file_path="Train/requirements.txt")
 
-env = azureml.core.Environment.from_pip_requirements(name="food-env", file_path="Train/requirements.txt")
+    mount_context = food11_dataset.as_mount()
 
-mount_context = food11_dataset.as_mount()
+    src = ScriptRunConfig(
+        source_directory="./Train",
+        script="train.py",
+        compute_target=compute_target,
+        environment=env,
+        arguments=['--data-path', food11_dataset.as_mount()]
+    )
 
-src = ScriptRunConfig(
-    source_directory="./Train",
-    script="train.py",
-    compute_target=compute_target,
-    environment=env,
-    arguments=['--data-path', food11_dataset.as_mount()]
-)
+    experiment = azureml.core.Experiment(ws, "Food11Training")
+    run = experiment.submit(src)
 
-experiment = azureml.core.Experiment(ws, "Food11Training")
-run = experiment.submit(src)
+    azureml_url = run.get_portal_url()
+    with open(LINKS_PATH, "a") as f:
+        f.write(f"AzureML Run: {azureml_url}\n")
 
-azureml_url = run.get_portal_url()
-with open(LINKS_PATH, "a") as f:
-    f.write(f"AzureML Run: {azureml_url}\n")
+    run.log("epochs", EPOCHS)
+    run.log("batch_size", BATCH_SIZE)
+    run.log("num_classes", NUM_CLASSES)
+    run.log("val_accuracy", val_acc)
+    run.log("val_f1", val_f1)
+    run.log("eval_accuracy", eval_acc)
+    run.log("eval_f1", eval_f1)
+    run.log("val_loss", val_loss)
+    run.log("eval_loss", eval_loss)
 
-run.log("epochs", EPOCHS)
-run.log("batch_size", BATCH_SIZE)
-run.log("num_classes", NUM_CLASSES)
-run.log("val_accuracy", val_acc)
-run.log("val_f1", val_f1)
-run.log("eval_accuracy", eval_acc)
-run.log("eval_f1", eval_f1)
-run.log("val_loss", val_loss)
-run.log("eval_loss", eval_loss)
+    run.upload_file(name="outputs/confusion_matrix.png", path_or_stream=CONF_MATRIX_IMG)
 
-run.upload_file(name="outputs/confusion_matrix.png", path_or_stream=CONF_MATRIX_IMG)
+    os.makedirs("outputs", exist_ok=True)
+    joblib.dump(model, "Model/outputs/model.pkl")
 
-os.makedirs("outputs", exist_ok=True)
-joblib.dump(model, "Model/outputs/model.pkl")
+    run.wait_for_completion(show_output=True)
 
-run.wait_for_completion(show_output=True)
-
-mount_context.stop()
+    mount_context.stop()
