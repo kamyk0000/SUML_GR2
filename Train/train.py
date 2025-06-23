@@ -45,7 +45,7 @@ args, _ = parser.parse_known_args()
 # %%
 # CONFIG
 if args.data_path is None:
-    DATA_DIR = "./Data/"
+    DATA_DIR = "../Data/"
 else:
     DATA_DIR = args.data_path
 MODEL_PTH = "Model/food11_resnet18.pth"
