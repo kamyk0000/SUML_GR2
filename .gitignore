@@ -1,6 +1,4 @@
 # Ignore data directory
-Data/evaluation/
-Data/validation/
 
 # Ignore model output
 Model/checkpoints/
