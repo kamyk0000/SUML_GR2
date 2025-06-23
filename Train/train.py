@@ -57,7 +57,7 @@ CONF_MATRIX_IMG = "Results/model_results.png"
 PARAM_PATH = "Results/params.txt"
 LINKS_PATH = "Results/links.txt"
 BATCH_SIZE = 32
-EPOCHS = 3
+EPOCHS = 1
 NUM_CLASSES = 11
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -189,7 +189,7 @@ with mlflow.start_run(run_name="resnet18-food11"):
         registered_model_name="Food11ResNet",
         input_example=dummy_input2
     )
-    mlflow_url = f"{mlflow.get_tracking_uri().rstrip('/')}/#/experiments/{mlflow.active_run().info.experiment_id}/runs/{mlflow.active_run().info.run_id}"
+    mlflow_url = f"{mlflow.get_tracking_uri().removesuffix('/')}/#/experiments/{mlflow.active_run().info.experiment_id}/runs/{mlflow.active_run().info.run_id}"
     with open(LINKS_PATH, "w") as f:
         f.write(f"MLflow Run: {mlflow_url}\n")
 
