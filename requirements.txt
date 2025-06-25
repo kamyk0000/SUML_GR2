@@ -3,4 +3,6 @@ pandas
 scikit-learn
 matplotlib
 skops
+streamlit
+gradio
 
