@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 from MLflow.app import MLflowClient
+from Train.predictor import FoodClassifier
 
 # python -m streamlit run Streamlit/app.py
 
@@ -16,9 +17,9 @@ if uploaded:
     image = Image.open(uploaded).convert("RGB")
     st.image(image, caption="Uploaded Photo", use_container_width=True)
 
-    # classifier = FoodClassifier("Model/food11.onnx")
-    # label, confidence = classifier.predict(image)
-    client = MLflowClient()
-    label, confidence = client.predict(image=image)
+    classifier = FoodClassifier("Model/food11.onnx")
+    label, confidence = classifier.predict(image)
+    #client = MLflowClient()
+    #label, confidence = client.predict(image=image)
 
     st.success(f"Predicted Food Type: **{label}** ({confidence * 100:.2f}% confidence)")
