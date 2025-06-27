@@ -1,20 +1,22 @@
-FROM python:3.9.13-slim
+FROM python:3.10-slim
 
-#WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-      build-essential \
-      python3-dev \
-      libffi-dev \
-      libssl-dev \
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel \
-    && pip install --no-cache-dir -r requirements.txt
+WORKDIR /app
 
-COPY . .
+COPY . /app
 
-EXPOSE 8501 5000
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+RUN pip install streamlit mlflow onnx onnxruntime pillow scikit-learn
+
+EXPOSE 8501
 
 CMD ["streamlit", "run", "Streamlit/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
