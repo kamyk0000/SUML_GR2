@@ -1,1 +1,1 @@
-MLflow Run: file:///home/runner/work/SUML_GR2/SUML_GR2/Train/mlruns/#/experiments/0/runs/2e409a7880784710ae8717e9a43abd1e
+MLflow Run: file:///home/runner/work/SUML_GR2/SUML_GR2/Train/mlruns/#/experiments/0/runs/106fac256aef4c459359e7a9224f2f5d
