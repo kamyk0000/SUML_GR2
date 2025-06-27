@@ -30,19 +30,21 @@ parser.add_argument(
 )
 if os.getenv("CI") != "true":
     ws = Workspace.from_config()
-    datastore = Datastore.register_azure_blob_container(
-        workspace=ws,
-        datastore_name="food11",
-        container_name="food11-data",
-        account_name="food11",
-        account_key=os.environ.get("AZURE_ML_ACCOUNT_KEY"),
-        create_if_not_exists=False,
-    )
-    datastore = Datastore.get(ws, "food11")
+    try:
+        datastore = Datastore.get(ws, "food11")
+    except Exception as e:
+        print("Datastore not found, attempting to register it...")
+        datastore = Datastore.register_azure_blob_container(
+            workspace=ws,
+            datastore_name="food11",
+            container_name="food11-data",
+            account_name="food11",
+            account_key=os.environ.get("AZURE_ML_ACCOUNT_KEY"),
+            create_if_not_exists=True,  # Might still fail if the info doesn't match
+        )
+
     data_path_on_blob = [(datastore, "food11-data/")]
-
     food11_dataset = Dataset.File.from_files(path=data_path_on_blob)
-
     food11_dataset = food11_dataset.register(
         workspace=ws,
         name="food11_dataset",
