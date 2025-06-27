@@ -18,10 +18,9 @@ class MLflowClient:
         session = ort.InferenceSession(onnx_model.SerializeToString(), providers=["CPUExecutionProvider"])
         return session
 
-    def predict(self, model_name="Food11ONNX",
-                image: Image.Image = Image.open('C:\\Users\\kamyk\\Documents\\GitHub\\SUML_GR2'
-                                                '\\Data\\evaluation\\Bread\\0.jpg').convert("RGB")):
-        classifier = FoodClassifier(session=self.get_latest_session(model_name))
+    def predict(self, image, model_name="Food11ONNX"):
+        session = self.get_latest_session(model_name)
+        classifier = FoodClassifier(session=session)
         label, confidence = classifier.predict(image)
         print(f"🍽️ Predicted Food Type: **{label}** ({confidence * 100:.2f}% confidence)")
         return label, confidence
