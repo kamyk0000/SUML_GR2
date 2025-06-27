@@ -19,7 +19,7 @@ if uploaded:
 
     classifier = FoodClassifier("Model/food11.onnx")
     label, confidence = classifier.predict(image)
-    #client = MLflowClient()
-    #label, confidence = client.predict(image=image)
+    client = MLflowClient()
+    label, confidence = client.predict(image=image)
 
     st.success(f"Predicted Food Type: **{label}** ({confidence * 100:.2f}% confidence)")
