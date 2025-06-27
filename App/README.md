@@ -5,7 +5,7 @@ colorFrom: red
 colorTo: yellow
 sdk: gradio
 sdk_version: 5.32.0
-app_file: App/drug_app.py
+app_file: drug_app.py
 pinned: false
 license: apache-2.0
 short_description: SUML datacamp model trainer GR2
