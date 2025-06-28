@@ -66,7 +66,7 @@ CONF_MATRIX_IMG = "../Results/model_results.png"
 PARAM_PATH = "../Results/params.txt"
 LINKS_PATH = "../Results/links.txt"
 BATCH_SIZE = 32
-EPOCHS = 10
+EPOCHS = 1
 NUM_CLASSES = 11
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
