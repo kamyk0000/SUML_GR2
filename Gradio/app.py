@@ -18,3 +18,4 @@ interface = gr.Interface(
     title="SUML Food11 Classifier",
     description="Input an image of food below to get the classification.",
 ).launch()
+
