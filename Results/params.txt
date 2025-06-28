@@ -1,3 +1,3 @@
 Optimizer = Adam, Loss Function = CrossEntropyLoss, Architecture = ResNet
-Epochs = 10, Batch Size = 32, Classes = 11
+Epochs = 1, Batch Size = 32, Classes = 11
 Data Sizes -> Train = 9866, Validation = 3430, Evaluation = 3347
