@@ -1,7 +1,7 @@
 import streamlit as st
 from PIL import Image
 from MLflow.app import MLflowClient
-from Train.predictor import FoodClassifier
+from Model.predictor import FoodClassifier
 
 # python -m streamlit run Streamlit/app.py
 

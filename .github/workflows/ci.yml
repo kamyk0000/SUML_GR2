@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: Proj Continuous Integration
 on:
   push:
     branches: [ "project" ]

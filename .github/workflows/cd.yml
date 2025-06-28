@@ -1,7 +1,7 @@
-name: Continuous Deployment
+name: Proj Continuous Deployment
 on:
   workflow_run:
-    workflows: ["Continuous Integration"]
+    workflows: ["Proj Continuous Integration"]
     types:
       - completed
 
