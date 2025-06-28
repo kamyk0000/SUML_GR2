@@ -1,0 +1,8 @@
+onnxruntime
+onnx
+numpy
+torchvision
+gradio
+matplotlib
+skops
+scikit-learn

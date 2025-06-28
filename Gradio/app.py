@@ -9,7 +9,7 @@ def classify_food(image):
     return f"🍽️ Predicted Food Type: *{label}* ({confidence * 100:.2f}% confidence)"
 
 
-classifier = FoodClassifier("../Model/food11.onnx")
+classifier = FoodClassifier("./Model/food11.onnx")
 
 interface = gr.Interface(
     fn=classify_food,
