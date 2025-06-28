@@ -33,8 +33,8 @@ hf-login:
 	huggingface-cli login --token $(HF) --add-to-git-credential
 
 push-hub:
-	huggingface-cli upload kamyk0000/Food11-Classification ../Streamlit  --repo-type=space --commit-message="Sync Streamlit"
-	#huggingface-cli upload kamyk0000/Food11-Classification ../Gradio  --repo-type=space --commit-message="Sync Gradio"
+	#huggingface-cli upload kamyk0000/Food11-Classification ../Streamlit  --repo-type=space --commit-message="Sync Streamlit"
+	huggingface-cli upload kamyk0000/Food11-Classification ../Gradio  --repo-type=space --commit-message="Sync Gradio"
 	huggingface-cli upload kamyk0000/Food11-Classification ../Model /Model --repo-type=space --commit-message="Sync Model"
 	huggingface-cli upload kamyk0000/Food11-Classification ../Results /Metrics --repo-type=space --commit-message="Sync Model"
 
