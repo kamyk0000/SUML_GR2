@@ -1,3 +1,3 @@
-Training Duration -> 809.4876968860626s
-Validation Accuracy = 66.73%, F1 = 0.67, Loss = 1.033
-Evaluation Accuracy = 68.33%, F1 = 0.68, Loss = 0.957
+Training Duration -> 804.3308176994324s
+Validation Accuracy = 66.91%, F1 = 0.62, Loss = 1.144
+Evaluation Accuracy = 67.49%, F1 = 0.63, Loss = 1.070
